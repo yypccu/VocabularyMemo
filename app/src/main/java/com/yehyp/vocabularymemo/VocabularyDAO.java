@@ -1,52 +1,40 @@
 package com.yehyp.vocabularymemo;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
  * Created by YEH MC on 2016/7/24.
  */
-public class ItemDAO {
+// 資料功能類別
+public class VocabularyDAO {
     // 表格名稱
-    public static final String TABLE_NAME = "item";
+    public static final String TABLE_NAME = "vocabulary";
 
     // 編號表格欄位名稱，固定不變
     public static final String KEY_ID = "_id";
 
     // 其它表格欄位名稱
     public static final String DATETIME_COLUMN = "datetime";
-    public static final String COLOR_COLUMN = "color";
-    public static final String TITLE_COLUMN = "title";
-    public static final String CONTENT_COLUMN = "content";
-    public static final String FILENAME_COLUMN = "filename";
-    public static final String LATITUDE_COLUMN = "latitude";
-    public static final String LONGITUDE_COLUMN = "longitude";
-    public static final String LASTMODIFY_COLUMN = "lastmodify";
+    public static final String WORD_COLUMN = "word";
+    public static final String ATTR_COLUMN = "attribute";
+    public static final String MEANING_COLUMN = "meaning";
 
     // 使用上面宣告的變數建立表格的SQL指令
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     DATETIME_COLUMN + " INTEGER NOT NULL, " +
-                    COLOR_COLUMN + " INTEGER NOT NULL, " +
-                    TITLE_COLUMN + " TEXT NOT NULL, " +
-                    CONTENT_COLUMN + " TEXT NOT NULL, " +
-                    FILENAME_COLUMN + " TEXT, " +
-                    LATITUDE_COLUMN + " REAL, " +
-                    LONGITUDE_COLUMN + " REAL, " +
-                    LASTMODIFY_COLUMN + " INTEGER)";
+                    WORD_COLUMN + " TEXT NOT NULL, " +
+                    ATTR_COLUMN + " TEXT NOT NULL,  " +
+                    MEANING_COLUMN + " TEXT NOT NULL)";
 
     // 資料庫物件
     private SQLiteDatabase db;
 
     // 建構子，一般的應用都不需要修改
-    public ItemDAO(Context context) {
+    public VocabularyDAO(Context context) {
         db = MyDBHelper.getDatabase(context);
     }
 
@@ -56,7 +44,7 @@ public class ItemDAO {
     }
 
     // 新增參數指定的物件
-    public Item insert(Item item) {
+    public Vocabulary insert(Vocabulary item) {
         // 建立準備新增資料的ContentValues物件
         ContentValues cv = new ContentValues();
 
