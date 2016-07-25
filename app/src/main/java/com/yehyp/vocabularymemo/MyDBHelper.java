@@ -35,14 +35,13 @@ public class MyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 建立應用程式需要的表格
-        // 待會再回來完成它
+        db.execSQL(VocabularyDAO.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // 刪除原有的表格
-        // 待會再回來完成它
-
+        db.execSQL("DROP TABLE IF EXISTS " + VocabularyDAO.TABLE_NAME);
         // 呼叫onCreate建立新版的表格
         onCreate(db);
     }

@@ -2,7 +2,11 @@ package com.yehyp.vocabularymemo;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by YEH MC on 2016/7/24.
@@ -16,7 +20,7 @@ public class VocabularyDAO {
     public static final String KEY_ID = "_id";
 
     // 其它表格欄位名稱
-    public static final String DATETIME_COLUMN = "datetime";
+    //public static final String DATETIME_COLUMN = "datetime";
     public static final String WORD_COLUMN = "word";
     public static final String ATTR_COLUMN = "attribute";
     public static final String MEANING_COLUMN = "meaning";
@@ -25,7 +29,7 @@ public class VocabularyDAO {
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    DATETIME_COLUMN + " INTEGER NOT NULL, " +
+                    //DATETIME_COLUMN + " INTEGER NOT NULL, " +
                     WORD_COLUMN + " TEXT NOT NULL, " +
                     ATTR_COLUMN + " TEXT NOT NULL,  " +
                     MEANING_COLUMN + " TEXT NOT NULL)";
@@ -44,20 +48,16 @@ public class VocabularyDAO {
     }
 
     // 新增參數指定的物件
-    public Vocabulary insert(Vocabulary item) {
+    public Vocabulary insert(Vocabulary vocabulary) {
         // 建立準備新增資料的ContentValues物件
         ContentValues cv = new ContentValues();
 
         // 加入ContentValues物件包裝的新增資料
         // 第一個參數是欄位名稱， 第二個參數是欄位的資料
-        cv.put(DATETIME_COLUMN, item.getDatetime());
-        cv.put(COLOR_COLUMN, item.getColor().parseColor());
-        cv.put(TITLE_COLUMN, item.getTitle());
-        cv.put(CONTENT_COLUMN, item.getContent());
-        cv.put(FILENAME_COLUMN, item.getFileName());
-        cv.put(LATITUDE_COLUMN, item.getLatitude());
-        cv.put(LONGITUDE_COLUMN, item.getLongitude());
-        cv.put(LASTMODIFY_COLUMN, item.getLastModify());
+        //cv.put(DATETIME_COLUMN, vocabulary.getDatetime());
+        cv.put(WORD_COLUMN, vocabulary.getWord());
+        cv.put(ATTR_COLUMN, vocabulary.getAttribute());
+        cv.put(MEANING_COLUMN, vocabulary.getMeaning());
 
         // 新增一筆資料並取得編號
         // 第一個參數是表格名稱
@@ -65,33 +65,30 @@ public class VocabularyDAO {
         // 第三個參數是包裝新增資料的ContentValues物件
         long id = db.insert(TABLE_NAME, null, cv);
 
-        // 設定編號
-        item.setId(id);
+        vocabulary.setId(id);
+
         // 回傳結果
-        return item;
+        return vocabulary;
     }
 
     // 修改參數指定的物件
-    public boolean update(Item item) {
+    public boolean update(Vocabulary vocabulary) {
         // 建立準備修改資料的ContentValues物件
         ContentValues cv = new ContentValues();
 
         // 加入ContentValues物件包裝的修改資料
         // 第一個參數是欄位名稱， 第二個參數是欄位的資料
-        cv.put(DATETIME_COLUMN, item.getDatetime());
-        cv.put(COLOR_COLUMN, item.getColor().parseColor());
-        cv.put(TITLE_COLUMN, item.getTitle());
-        cv.put(CONTENT_COLUMN, item.getContent());
-        cv.put(FILENAME_COLUMN, item.getFileName());
-        cv.put(LATITUDE_COLUMN, item.getLatitude());
-        cv.put(LONGITUDE_COLUMN, item.getLongitude());
-        cv.put(LASTMODIFY_COLUMN, item.getLastModify());
+        //cv.put(DATETIME_COLUMN, vocabulary.getDatetime());
+        cv.put(WORD_COLUMN, vocabulary.getWord());
+        cv.put(ATTR_COLUMN, vocabulary.getAttribute());
+        cv.put(MEANING_COLUMN, vocabulary.getMeaning());
 
         // 設定修改資料的條件為編號
         // 格式為「欄位名稱＝資料」
-        String where = KEY_ID + "=" + item.getId();
+        String where = KEY_ID + "=" + vocabulary.getId();
 
         // 執行修改資料並回傳修改的資料數量是否成功
+        //return db.update(TABLE_NAME, cv, KEY_ID, null) > 0;
         return db.update(TABLE_NAME, cv, where, null) > 0;
     }
 
@@ -100,14 +97,14 @@ public class VocabularyDAO {
         // 設定條件為編號，格式為「欄位名稱=資料」
         String where = KEY_ID + "=" + id;
         // 刪除指定編號資料並回傳刪除是否成功
+        //return db.delete(TABLE_NAME, KEY_ID , null) > 0;
         return db.delete(TABLE_NAME, where , null) > 0;
     }
 
     // 讀取所有記事資料
-    public List<Item> getAll() {
-        List<Item> result = new ArrayList<>();
-        Cursor cursor = db.query(
-                TABLE_NAME, null, null, null, null, null, null, null);
+    public List<Vocabulary> getAll() {
+        List<Vocabulary> result = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
             result.add(getRecord(cursor));
@@ -118,41 +115,45 @@ public class VocabularyDAO {
     }
 
     // 取得指定編號的資料物件
-    public Item get(long id) {
+    public Vocabulary get(long id) {
         // 準備回傳結果用的物件
-        Item item = null;
+        Vocabulary vocabulary = null;
         // 使用編號為查詢條件
         String where = KEY_ID + "=" + id;
         // 執行查詢
-        Cursor result = db.query(
-                TABLE_NAME, null, where, null, null, null, null, null);
+        Cursor result = db.query(TABLE_NAME, null, where, null, null, null, null, null);
 
         // 如果有查詢結果
         if (result.moveToFirst()) {
             // 讀取包裝一筆資料的物件
-            item = getRecord(result);
+            vocabulary = getRecord(result);
         }
 
         // 關閉Cursor物件
         result.close();
         // 回傳結果
-        return item;
+        return vocabulary;
     }
 
     // 把Cursor目前的資料包裝為物件
-    public Item getRecord(Cursor cursor) {
+    public Vocabulary getRecord(Cursor cursor) {
         // 準備回傳結果用的物件
-        Item result = new Item();
+        Vocabulary result = new Vocabulary();
 
         result.setId(cursor.getLong(0));
+        result.setWord(cursor.getString(1));
+        result.setAttribute(cursor.getString(2));
+        result.setMeaning(cursor.getString(3));
+        /*
         result.setDatetime(cursor.getLong(1));
-        result.setColor(ItemActivity.getColors(cursor.getInt(2)));
+        result.setColor(VocabularyActivity.getColors(cursor.getInt(2)));
         result.setTitle(cursor.getString(3));
         result.setContent(cursor.getString(4));
         result.setFileName(cursor.getString(5));
         result.setLatitude(cursor.getDouble(6));
         result.setLongitude(cursor.getDouble(7));
         result.setLastModify(cursor.getLong(8));
+        */
 
         // 回傳結果
         return result;
@@ -172,15 +173,22 @@ public class VocabularyDAO {
 
     // 建立範例資料
     public void sample() {
-        Item item = new Item(0, new Date().getTime(), Colors.RED, "關於Android Tutorial的事情.", "Hello content", "", 0, 0, 0);
-        Item item2 = new Item(0, new Date().getTime(), Colors.BLUE, "一隻非常可愛的小狗狗!", "她的名字叫「大熱狗」，又叫\n作「奶嘴」，是一隻非常可愛\n的小狗。", "", 25.04719, 121.516981, 0);
-        Item item3 = new Item(0, new Date().getTime(), Colors.GREEN, "一首非常好聽的音樂！", "Hello content", "", 0, 0, 0);
-        Item item4 = new Item(0, new Date().getTime(), Colors.ORANGE, "儲存在資料庫的資料", "Hello content", "", 0, 0, 0);
+        /*
+        Vocabulary vocabulary = new Vocabulary(0, new Date().getTime(), Colors.RED, "關於Android Tutorial的事情.", "Hello content", "", 0, 0, 0);
+        Vocabulary vocabulary2 = new Vocabulary(0, new Date().getTime(), Colors.BLUE, "一隻非常可愛的小狗狗!", "她的名字叫「大熱狗」，又叫\n作「奶嘴」，是一隻非常可愛\n的小狗。", "", 25.04719, 121.516981, 0);
+        Vocabulary vocabulary3 = new Vocabulary(0, new Date().getTime(), Colors.GREEN, "一首非常好聽的音樂！", "Hello content", "", 0, 0, 0);
+        Vocabulary vocabulary4 = new Vocabulary(0, new Date().getTime(), Colors.ORANGE, "儲存在資料庫的資料", "Hello content", "", 0, 0, 0);
+        */
 
-        insert(item);
-        insert(item2);
-        insert(item3);
-        insert(item4);
+        Vocabulary vocabulary = new Vocabulary(0, "prospective", "adj.", "預期的, 未來的");
+        Vocabulary vocabulary2 = new Vocabulary(0, "secure a deal", "phr.", "獲得一筆交易");
+        Vocabulary vocabulary3 = new Vocabulary(0, "whereas", "conj.", "然而, 雖然");
+        Vocabulary vocabulary4 = new Vocabulary(0, "demeanor", "n.", "舉止, 行為, 態度");
+
+        insert(vocabulary);
+        insert(vocabulary2);
+        insert(vocabulary3);
+        insert(vocabulary4);
     }
 
 }
