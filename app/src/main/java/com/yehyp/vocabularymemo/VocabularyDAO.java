@@ -144,17 +144,7 @@ public class VocabularyDAO {
         result.setWord(cursor.getString(1));
         result.setAttribute(cursor.getString(2));
         result.setMeaning(cursor.getString(3));
-        /*
-        result.setDatetime(cursor.getLong(1));
-        result.setColor(VocabularyActivity.getColors(cursor.getInt(2)));
-        result.setTitle(cursor.getString(3));
-        result.setContent(cursor.getString(4));
-        result.setFileName(cursor.getString(5));
-        result.setLatitude(cursor.getDouble(6));
-        result.setLongitude(cursor.getDouble(7));
-        result.setLastModify(cursor.getLong(8));
-        */
-
+        
         // 回傳結果
         return result;
     }
@@ -173,13 +163,6 @@ public class VocabularyDAO {
 
     // 建立範例資料
     public void sample() {
-        /*
-        Vocabulary vocabulary = new Vocabulary(0, new Date().getTime(), Colors.RED, "關於Android Tutorial的事情.", "Hello content", "", 0, 0, 0);
-        Vocabulary vocabulary2 = new Vocabulary(0, new Date().getTime(), Colors.BLUE, "一隻非常可愛的小狗狗!", "她的名字叫「大熱狗」，又叫\n作「奶嘴」，是一隻非常可愛\n的小狗。", "", 25.04719, 121.516981, 0);
-        Vocabulary vocabulary3 = new Vocabulary(0, new Date().getTime(), Colors.GREEN, "一首非常好聽的音樂！", "Hello content", "", 0, 0, 0);
-        Vocabulary vocabulary4 = new Vocabulary(0, new Date().getTime(), Colors.ORANGE, "儲存在資料庫的資料", "Hello content", "", 0, 0, 0);
-        */
-
         Vocabulary vocabulary = new Vocabulary(0, "prospective", "adj.", "預期的, 未來的");
         Vocabulary vocabulary2 = new Vocabulary(0, "secure a deal", "phr.", "獲得一筆交易");
         Vocabulary vocabulary3 = new Vocabulary(0, "whereas", "conj.", "然而, 雖然");
