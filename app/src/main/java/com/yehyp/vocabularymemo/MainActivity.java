@@ -18,10 +18,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mListView= (ListView)findViewById(R.id.list);
-        vocabulary_list.add(new Vocabulary("prospective", "adj.", "預期的, 未來的"));
-        vocabulary_list.add(new Vocabulary("secure a deal", "phr.", "獲得一筆交易"));
-        vocabulary_list.add(new Vocabulary("whereas", "conj.", "然而, 雖然"));
+        VocabularyDAO vocabularyDAO = new VocabularyDAO(getApplicationContext());
+        if (vocabularyDAO.getCount() == 0) {
+            vocabularyDAO.sample();
+        }
+        vocabulary_list = vocabularyDAO.getAll();
         adapter = new MyAdapter(MainActivity.this, vocabulary_list);
         mListView.setAdapter(adapter);
     }
+
 }
