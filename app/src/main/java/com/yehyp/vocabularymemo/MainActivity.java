@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MyAdapter(MainActivity.this, vocabulary_list);
         mListView.setAdapter(adapter);
 
-        Button addButtom = (Button)findViewById(R.id.button_add);
+        ImageButton addButtom = (ImageButton)findViewById(R.id.button_add);
         addButtom.setOnClickListener(addVocabuary);
     }
 
@@ -54,12 +55,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //TODO
-            }
-        });
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ;
             }
         });
         dialog.show();
