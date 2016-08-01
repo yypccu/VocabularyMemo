@@ -144,7 +144,7 @@ public class VocabularyDAO {
         result.setWord(cursor.getString(1));
         result.setAttribute(cursor.getString(2));
         result.setMeaning(cursor.getString(3));
-        
+
         // 回傳結果
         return result;
     }

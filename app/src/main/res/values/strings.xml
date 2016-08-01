@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">VocabularyMemo</string>
+    <string name="test">test</string>
+    <string name="text_add_new_vocabulary">新增詞彙</string>
+    <string name="btn_confirm">確認新增</string>
+
 </resources>

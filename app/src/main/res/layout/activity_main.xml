@@ -16,13 +16,15 @@
         android:layout_width="match_parent"
         android:layout_alignParentEnd="true" />
 
-
-    <!--
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageButton
+        android:id="@+id/button_add"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
-    -->
-
+        android:layout_width="wrap_content"
+        android:src="@drawable/addbutton_src_img_selector"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="false"
+        android:background="@null"
+        android:contentDescription="@string/test" />
 
 </RelativeLayout>
